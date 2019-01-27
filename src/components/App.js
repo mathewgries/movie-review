@@ -15,19 +15,25 @@ function Blurb() {
 	)
 }
 
-function Header() {
+function Header(props) {
 	return (
 		<div className='site-header-container'>
 			<div>
 				<h1>
 					<Link to='/' className='header-link'>
-						Welcome to Movie Review
+						Movie Review
 					</Link>
 				</h1>
 			</div>
-			<div>
+			<div className='header-search'>
 				<MovieSearch
 					direction='row'
+					onMovieSubmit={function (movie) {
+						props.history.push({
+							pathname: 'moviereviews',
+							search: movie
+						})
+					}}
 				/>
 			</div>
 		</div>
@@ -69,7 +75,14 @@ class App extends Component {
 		return (
 			<Router>
 				<div className='container'>
-					<Header />
+					<Route render={function (props) {
+						return (
+							<div>
+								<Header history={props.history} />
+							</div>
+						)
+					}}
+					/>
 					<Switch>
 						<Route exact path='/' component={Home} />
 						<Route path='/moviereviews' component={ResultsList} />
