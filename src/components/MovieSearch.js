@@ -26,6 +26,11 @@ class MovieSearch extends React.Component {
     handleSubmitMovie(){
         var { movie } = this.state
         this.props.onMovieSubmit(movie)
+        this.setState(function(){
+            return {
+                movie: ''
+            }
+        })
     }
 
     render() {

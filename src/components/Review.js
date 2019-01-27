@@ -48,7 +48,7 @@ function Review(props) {
 }
 
 Review.propTypes = {
-    movie: PropType.array.isRequired
+    movie: PropType.object.isRequired
 }
 
 export default Review

@@ -46,6 +46,34 @@ class ResultsList extends React.Component {
             }.bind(this))
     }
 
+    componentWillReceiveProps(nextProps) {
+        var movie = nextProps.location.search.slice(1)
+
+        this.setState(function () {
+            return { loading: true, }
+        })
+
+        api.getMovie(movie)
+            .then(function (data) {
+                this.setState(function () {
+                    return {
+                        orderby: 'title',
+                        ascending: true,
+                        resultList: data.results.sort(function (a, b) {
+                            var x = a.display_title
+                            var y = b.display_title
+                            if (x < y) { return -1 }
+                            if (x > y) { return 1 }
+                            return 0
+                        }),
+                        count: data.num_results,
+                        loading: false,
+                        more: data.has_more,
+                    }
+                })
+            }.bind(this))
+    }
+
     reorderList(event) {
         var name = event.target.name
         if (name === 'title') { this.orderListByTitle(name) }
