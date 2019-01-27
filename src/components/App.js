@@ -26,7 +26,6 @@ function Header(props) {
 				</h1>
 			</div>
 			<div className='header-search'>
-			{console.log(props)}
 				<MovieSearch
 					direction='row'
 					onMovieSubmit={function (movie) {
@@ -50,7 +49,6 @@ function Footer() {
 }
 
 function Home(props) {
-	console.log(props)
 	return (
 		<div className='home-container'>
 			<div className='blurb-container'>
@@ -61,7 +59,6 @@ function Home(props) {
 				<MovieSearch
 					direction='column'
 					onMovieSubmit={function (movie) {
-						console.log(props)
 						props.history.push({
 							pathname: 'moviereviews',
 							search: movie
@@ -81,8 +78,7 @@ class App extends Component {
 					<Route render={function (props) {
 						return (
 							<div>
-							{console.log(props)}
-							<Header history={props.history}/>
+								<Header history={props.history} />
 							</div>
 						)
 					}}
