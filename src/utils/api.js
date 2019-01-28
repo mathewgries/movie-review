@@ -8,8 +8,8 @@ var _APIKEY = '&api-key=lDScKB3aIURGUXjTzj5U8RAZtaSF8n1F'
 
 function getMovie(movie) {
     return axios.get(_baseURL + movie + _APIKEY )
-        .then(function (movie) {
-            return movie.data
+        .then(function (res) {
+            return res.data
         })
         .catch(function (error) {
             console.error(error)
