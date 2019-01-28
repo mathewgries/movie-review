@@ -44,6 +44,9 @@ class ResultsList extends React.Component {
                     }
                 })
             }.bind(this))
+            .catch(function(error){
+                console.log(error)
+            })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -167,8 +170,8 @@ class ResultsList extends React.Component {
                             </button>
                         </div>
                     </div>
-                    {this.state.resultList.map(function (item) {
-                        return <Review key={item.display_title} movie={item} />
+                    {this.state.resultList.map(function (item, index) {
+                        return <Review key={index} movie={item} />
                     })}
                 </div>
         )
