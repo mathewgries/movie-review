@@ -1,13 +1,15 @@
 import React from 'react'
 import PropType from 'prop-types'
 
-function Review(props) {
-    var { movie } = props
+function Review({ movie }) {
     var pic = null
     var link = null
 
     if (movie.multimedia !== null) {
         pic = movie.multimedia.src
+    }
+    else {
+        pic = 'https://i2.wp.com/kerryhannon.com/wp-content/uploads/2013/11/the-new-york-times-logo.jpg?fit=1202%2C1056&ssl=1'
     }
 
     if (movie.link !== null) {
@@ -19,15 +21,11 @@ function Review(props) {
             <a href={link} className='redirect-link'>
                 <div className='movie-result'>
                     <div className='image-container'>
-                        {
-                            pic !== null
-                                ? <img
-                                    src={pic}
-                                    className='movie-result-image'
-                                    alt={'Image for ' + movie.display_title}
-                                />
-                                : <div className='movie-result-image no-image'><p>No Image</p></div>
-                        }
+                        <img
+                            src={pic}
+                            className='movie-result-image'
+                            alt={'Image for ' + movie.display_title}
+                        />
                     </div>
                     <div className='movie-result-details'>
                         <div>

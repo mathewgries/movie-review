@@ -1,41 +1,34 @@
 import React from 'react'
-//import { Link } from 'react-router-dom'
-//import ResultsList from './ResultsList'
 import PropTypes from 'prop-types'
 
-
 class MovieSearch extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            movie: '',
-        }
-        this.handleChange = this.handleChange.bind(this)
-        this.handleSubmitMovie = this.handleSubmitMovie.bind(this)
+
+    static defaultProps = {
+        direction: 'column',
+    }
+    
+    static propTypes = {
+        direction: PropTypes.string.isRequired,
     }
 
-    handleChange(event){
+    state = {
+        movie: ''
+    }
+
+    handleChange = (event) => {
         var value = event.target.value
-        this.setState(function(){
-            return {
-                movie: value
-            }
-        })
+        this.setState(() => ({ movie: value }))
     }
 
-    handleSubmitMovie(){
+    handleSubmitMovie = () => {
         var { movie } = this.state
         this.props.onMovieSubmit(movie)
-        this.setState(function(){
-            return {
-                movie: ''
-            }
-        })
+        this.setState(() => ({ movie: '' }))
     }
 
     render() {
         var { direction } = this.props
-        var {movie} = this.state
+        var { movie } = this.state
         var disable = this.state.movie === '' ? true : false
         return (
             <div className='search-container' style={{ flexDirection: direction }}>
@@ -59,12 +52,6 @@ class MovieSearch extends React.Component {
     }
 }
 
-MovieSearch.defaultProps = {
-    direction: 'column',
-}
 
-MovieSearch.propTypes = {
-    direction: PropTypes.string.isRequired,
-}
 
 export default MovieSearch

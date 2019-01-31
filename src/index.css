@@ -197,10 +197,6 @@ li {
     width: 100%;
   }
 
-  .no-image {
-    font-size: 12px;
-  }
-
 .movie-result-details {
   display: flex;
   flex-direction: column;

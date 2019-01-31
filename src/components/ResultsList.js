@@ -1,95 +1,85 @@
 import React from 'react'
 import Review from './Review'
-var api = require('../utils/api')
+import { getMovie } from '../utils/api'
+import PropType from 'prop-types'
 
 class ResultsList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            resultList: [],
-            count: 0,
-            orderby: 'title',
-            ascending: true,
-            loading: false,
-            more: false,
-        }
-        this.reorderList = this.reorderList.bind(this)
-        this.orderListByTitle = this.orderListByTitle.bind(this)
-        this.orderListByDate = this.orderListByDate.bind(this)
+
+    static propTypes = {
+        location: PropType.object.isRequired
     }
 
-    componentDidMount() {
+    state = {
+        resultList: [],
+        count: 0,
+        orderby: 'title',
+        ascending: true,
+        loading: false,
+        more: false,
+    }
+
+    componentDidMount = () => {
         var movie = this.props.location.search.slice(1)
 
-        this.setState(function () {
-            return { loading: true, }
-        })
+        this.setState(() => ({ loading: true }))
 
-        api.getMovie(movie)
-            .then(function (data) {
-                this.setState(function () {
-                    return {
-                        orderby: 'title',
-                        ascending: true,
-                        resultList: data.results.sort(function (a, b) {
-                            var x = a.display_title
-                            var y = b.display_title
-                            if (x < y) { return -1 }
-                            if (x > y) { return 1 }
-                            return 0
-                        }),
-                        count: data.num_results,
-                        loading: false,
-                        more: data.has_more,
-                    }
-                })
-            }.bind(this))
-            .catch(function(error){
-                console.log(error)
-            })
+        getMovie(movie)
+            .then(({ results, num_results, has_more }) => {
+                this.setState(() => ({
+                    orderby: 'title',
+                    ascending: true,
+                    resultList: results.sort((a, b) => {
+                        var x = a.display_title
+                        var y = b.display_title
+                        if (x < y) { return -1 }
+                        if (x > y) { return 1 }
+                        return 0
+                    }),
+                    count: num_results,
+                    loading: false,
+                    more: has_more,
+                }))
+            }).catch((error) => console.log('Did Mount', error))
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps = (nextProps) => {
         var movie = nextProps.location.search.slice(1)
 
-        this.setState(function () {
-            return { loading: true, }
-        })
+        this.setState(() => ({ loading: true }))
 
-        api.getMovie(movie)
-            .then(function (data) {
-                this.setState(function () {
-                    return {
-                        orderby: 'title',
-                        ascending: true,
-                        resultList: data.results.sort(function (a, b) {
-                            var x = a.display_title
-                            var y = b.display_title
-                            if (x < y) { return -1 }
-                            if (x > y) { return 1 }
-                            return 0
-                        }),
-                        count: data.num_results,
-                        loading: false,
-                        more: data.has_more,
-                    }
-                })
-            }.bind(this))
+        getMovie(movie)
+            .then((data) => {
+                this.setState(() => ({
+                    orderby: 'title',
+                    ascending: true,
+                    resultList: data.results.sort((a, b) => {
+                        var x = a.display_title
+                        var y = b.display_title
+                        if (x < y) { return -1 }
+                        if (x > y) { return 1 }
+                        return 0
+                    }),
+                    count: data.num_results,
+                    loading: false,
+                    more: data.has_more,
+                }))
+            }).catch((error) => console.log('Recieve Props', error))
     }
 
-    reorderList(event) {
+
+    reorderList = (event) => {
         var name = event.target.name
         if (name === 'title') { this.orderListByTitle(name) }
         if (name === 'date') { this.orderListByDate(name) }
     }
 
-    orderListByTitle(name) {
+    orderListByTitle = (name) => {
         var ascending = this.state.orderby === name ? !this.state.ascending : true
         var list = this.state.resultList
         var newList = []
 
         if (ascending) {
-            newList = list.sort(function (a, b) {
+            newList = list.sort((a, b) => {
                 var x = a.display_title.toLowerCase()
                 var y = b.display_title.toLowerCase()
                 if (x < y) { return -1 }
@@ -98,7 +88,7 @@ class ResultsList extends React.Component {
             })
         }
         else {
-            newList = list.sort(function (a, b) {
+            newList = list.sort((a, b) => {
                 var x = a.display_title.toLowerCase()
                 var y = b.display_title.toLowerCase()
                 if (x > y) { return -1 }
@@ -108,42 +98,36 @@ class ResultsList extends React.Component {
 
         }
 
-        this.setState(function () {
-            return {
-                resultList: newList,
-                ascending: ascending,
-                orderby: name,
-            }
-        })
+        this.setState(() => ({
+            resultList: newList,
+            ascending: ascending,
+            orderby: name,
+        }))
     }
 
-    orderListByDate(name) {
+    orderListByDate = (name) => {
         var ascending = this.state.orderby === name ? !this.state.ascending : true
         var newList = []
         var list = this.state.resultList
 
         if (ascending) {
-            newList = list.sort(function (a, b) {
-                return new Date(b.opening_date) - new Date(a.opening_date)
-            })
+            newList = list.sort((a, b) => new Date(b.opening_date) - new Date(a.opening_date))
         } else {
-            newList = list.sort(function (a, b) {
-                return new Date(a.opening_date) - new Date(b.opening_date)
-            })
+            newList = list.sort((a, b) => new Date(a.opening_date) - new Date(b.opening_date))
         }
 
-        this.setState(function () {
-            return {
-                resultList: newList,
-                ascending: ascending,
-                orderby: name,
-            }
-        })
+        this.setState(() => ({
+            resultList: newList,
+            ascending: ascending,
+            orderby: name,
+
+        }))
     }
 
     render() {
+        const { loading } = this.state
         return (
-            this.state.loading === true
+            loading === true
                 ? <div>Loading</div>
                 : <div className='list-container'>
                     <div className='order-container'>
@@ -170,9 +154,7 @@ class ResultsList extends React.Component {
                             </button>
                         </div>
                     </div>
-                    {this.state.resultList.map(function (item, index) {
-                        return <Review key={index} movie={item} />
-                    })}
+                    {this.state.resultList.map((item, index) => <Review key={index} movie={item} />)}
                 </div>
         )
     }
