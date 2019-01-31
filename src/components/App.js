@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import MovieSearch from './MovieSearch'
 import ResultsList from './ResultsList';
+import PropType from 'prop-types'
 
 function Blurb() {
 	return (
@@ -15,7 +16,7 @@ function Blurb() {
 	)
 }
 
-function Header(props) {
+function Header({history}) {
 	return (
 		<div className='site-header-container'>
 			<div>
@@ -29,7 +30,7 @@ function Header(props) {
 				<MovieSearch
 					direction='row'
 					onMovieSubmit={function (movie) {
-						props.history.push({
+						history.push({
 							pathname: 'moviereviews',
 							search: movie
 						})
@@ -38,6 +39,10 @@ function Header(props) {
 			</div>
 		</div>
 	)
+}
+
+Header.propTypes = {
+	history: PropType.object.isRequired,
 }
 
 function Footer() {
@@ -48,7 +53,7 @@ function Footer() {
 	)
 }
 
-function Home(props) {
+function Home({history}) {
 	return (
 		<div className='home-container'>
 			<div className='blurb-container'>
@@ -59,7 +64,7 @@ function Home(props) {
 				<MovieSearch
 					direction='column'
 					onMovieSubmit={function (movie) {
-						props.history.push({
+						history.push({
 							pathname: 'moviereviews',
 							search: movie
 						})
@@ -70,15 +75,19 @@ function Home(props) {
 	)
 }
 
+Home.propTypes = {
+	history: PropType.object.isRequired,
+}
+
 class App extends Component {
 	render() {
 		return (
 			<Router>
 				<div className='container'>
-					<Route render={function (props) {
+					<Route render={function ({history}) {
 						return (
 							<div>
-								<Header history={props.history} />
+								<Header history={history} />
 							</div>
 						)
 					}}
