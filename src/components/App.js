@@ -16,7 +16,7 @@ function Blurb() {
 	)
 }
 
-function Header({history}) {
+function Header({ history }) {
 	return (
 		<div className='site-header-container'>
 			<div>
@@ -53,7 +53,7 @@ function Footer() {
 	)
 }
 
-function Home({history}) {
+function Home({ history }) {
 	return (
 		<div className='home-container'>
 			<div className='blurb-container'>
@@ -84,7 +84,7 @@ class App extends Component {
 		return (
 			<Router>
 				<div className='container'>
-					<Route render={function ({history}) {
+					<Route render={function ({ history }) {
 						return (
 							<div>
 								<Header history={history} />
