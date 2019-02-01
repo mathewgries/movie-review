@@ -18,52 +18,50 @@ class ResultsList extends React.Component {
         more: false,
     }
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
         var movie = this.props.location.search.slice(1)
 
         this.setState(() => ({ loading: true }))
 
-        getMovie(movie)
-            .then(({ results, num_results, has_more }) => {
-                this.setState(() => ({
-                    orderby: 'title',
-                    ascending: true,
-                    resultList: results.sort((a, b) => {
-                        var x = a.display_title
-                        var y = b.display_title
-                        if (x < y) { return -1 }
-                        if (x > y) { return 1 }
-                        return 0
-                    }),
-                    count: num_results,
-                    loading: false,
-                    more: has_more,
-                }))
-            }).catch((error) => console.log('Did Mount', error))
+        const results = await getMovie(movie).catch((error) => console.error(error))
+  
+        this.setState(() => ({
+            orderby: 'title',
+            ascending: true,
+            resultList: results.sort((a, b) => {
+                var x = a.display_title
+                var y = b.display_title
+                if (x < y) { return -1 }
+                if (x > y) { return 1 }
+                return 0
+            }),
+            count: results.num_results,
+            loading: false,
+            more: results.has_more,
+        }))
     }
 
-    componentWillReceiveProps = (nextProps) => {
+    componentWillReceiveProps = async (nextProps) => {
         var movie = nextProps.location.search.slice(1)
 
         this.setState(() => ({ loading: true }))
 
-        getMovie(movie)
-            .then((data) => {
-                this.setState(() => ({
-                    orderby: 'title',
-                    ascending: true,
-                    resultList: data.results.sort((a, b) => {
-                        var x = a.display_title
-                        var y = b.display_title
-                        if (x < y) { return -1 }
-                        if (x > y) { return 1 }
-                        return 0
-                    }),
-                    count: data.num_results,
-                    loading: false,
-                    more: data.has_more,
-                }))
-            }).catch((error) => console.log('Recieve Props', error))
+        const results = await getMovie(movie).catch((error) => console.error(error))
+
+        this.setState(() => ({
+            orderby: 'title',
+            ascending: true,
+            resultList: results.sort((a, b) => {
+                var x = a.display_title
+                var y = b.display_title
+                if (x < y) { return -1 }
+                if (x > y) { return 1 }
+                return 0
+            }),
+            count: results.num_results,
+            loading: false,
+            more: results.has_more,
+        }))
     }
 
 

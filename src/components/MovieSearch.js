@@ -6,7 +6,7 @@ class MovieSearch extends React.Component {
     static defaultProps = {
         direction: 'column',
     }
-    
+
     static propTypes = {
         direction: PropTypes.string.isRequired,
     }
